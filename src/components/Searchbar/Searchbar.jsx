@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { BiSearch } from 'react-icons/bi';
 import {
   SearchbarHeader,
   SearchForm,
@@ -7,28 +7,24 @@ import {
   SearchFormInput,
 } from './Searchbar.styles';
 
-export class Searchbar extends Component {
-  state = {};
+const Searchbar = ({ onSubmitSearchBar }) => (
+  <SearchbarHeader>
+    <SearchForm onSubmit={onSubmitSearchBar}>
+      <SearchFormButton type="submit">
+        <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+        <BiSearch style={{ margin: 10, height: 20, width: 20 }} />
+      </SearchFormButton>
 
-  render() {
-    return (
-      <SearchbarHeader>
-        <SearchForm>
-          <SearchFormButton type="submit">
-            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
-          </SearchFormButton>
-
-          <SearchFormInput
-            type="text"
-            autocomplete="off"
-            autofocus
-            placeholder="Search images
+      <SearchFormInput
+        type="text"
+        name="search"
+        autoComplete="off"
+        autoFocus
+        placeholder="Search images
             and photos"
-          ></SearchFormInput>
-        </SearchForm>
-      </SearchbarHeader>
-    );
-  }
-}
+      ></SearchFormInput>
+    </SearchForm>
+  </SearchbarHeader>
+);
 
 export default Searchbar;
