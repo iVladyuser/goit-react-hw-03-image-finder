@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { Searchbar, ImageGallery, Loader } from 'components/';
+import { Searchbar, ImageGallery, Loader, Modal } from 'components/';
 import { fetchPhoto, onFetchError } from 'service/api';
 
 export const paramsForNotify = {
@@ -76,25 +76,6 @@ class App extends Component {
       });
   };
 
-  onClickRender = () => {
-    this.setState(({ page }) => ({ page: page + 1 }));
-  };
-
-  toggleModal = () => {
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
-
-  onClickOpenModal = event => {
-    const { photos } = this.state;
-    const imageId = event.target.getAttribute('data-id');
-    const selectedPhoto = photos.find(photo => photo.id === Number(imageId));
-    this.setState({ selectedPhoto });
-
-    this.toggleModal();
-  };
-
   onSubmitSearchBar = event => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -123,8 +104,21 @@ class App extends Component {
     // form.reset();
   };
 
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({ showModal: !showModal }));
+  };
+
+  onClickOpenModal = event => {
+    const { photos } = this.state;
+    const imageId = event.target.getAttribute('data-id');
+    const selectedPhoto = photos.find(photo => photo.id === Number(imageId));
+    this.setState({ selectedPhoto });
+
+    this.toggleModal();
+  };
+
   render() {
-    const { loading, photos } = this.state;
+    const { loading, photos, showModal, selectedPhoto } = this.state;
 
     return (
       <div>
@@ -135,6 +129,12 @@ class App extends Component {
           photos={photos}
           onClickImageItem={this.onClickOpenModal}
         />
+        {showModal && (
+          <Modal
+            selectedPhoto={selectedPhoto}
+            onCloseModal={this.toggleModal}
+          />
+        )}
       </div>
     );
   }
