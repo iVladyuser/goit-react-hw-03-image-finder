@@ -1,13 +1,11 @@
-
 import React from 'react';
 
-import { GalleryItem, GalleryImage } from './ImageGalleryItem.styles'
+import { GalleryItem, GalleryImage } from './ImageGalleryItem.styles';
 
-
-const ImageGalleryItem = () => {
+const ImageGalleryItem = ({ id, tags, smallUrl, onClickImageItem }) => {
   return (
-    <GalleryItem>
-      <GalleryImage src="" alt="" />
+    <GalleryItem key={id} data-id={id} onClick={onClickImageItem}>
+      <GalleryImage src={smallUrl} alt={tags} data-id={id} />
     </GalleryItem>
   );
 };
