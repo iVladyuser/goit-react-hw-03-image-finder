@@ -6,6 +6,7 @@ const ImageGallery = ({ photos, onClickImageItem }) => (
     {photos !== null &&
       photos.map(({ webformatURL, id, tags }) => (
         <ImageGalleryItem
+          key={id}
           data-id={id}
           tags={tags}
           smallUrl={webformatURL}
