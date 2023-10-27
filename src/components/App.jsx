@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { Searchbar, ImageGallery, Loader, Modal } from 'components/';
+import { Searchbar, ImageGallery, Loader, Button, Modal } from 'components/';
 import { fetchPhoto, onFetchError } from 'service/api';
 
 export const paramsForNotify = {
@@ -41,39 +41,30 @@ class App extends Component {
         const { totalHits } = data;
         const totalPage = Math.ceil(data.totalHits / perPage);
         if (totalHits === 0) {
-          return Notify.failure(
-            'Sorry, there are no images matching your search query. Please try again.',
-            paramsForNotify
-          );
+          return Notify.failure('Sorry, there are no images matching your search query. Please try again.', paramsForNotify);
         }
 
-        const arrPhotos = data.hits.map(
-          ({ id, webformatURL, largeImageURL, tags }) => ({
-            id,
-            webformatURL,
-            largeImageURL,
-            tags,
-          })
-        );
-
-        this.setState(prevState => ({
-          photos: [...prevState.photos, ...arrPhotos],
-        }));
-
+        const arrPhotos = data.hits.map(({ id, webformatURL, largeImageURL, tags }) => (
+          { id, webformatURL, largeImageURL, tags }
+        ));
+        
+        this.setState(prevState =>
+          ({ photos: [...prevState.photos, ...arrPhotos] }));
+        
         if (totalPage > page) {
-          this.setState({ btnLoadMore: true });
+          this.setState({ btnLoadMore: true })
         } else {
-          Notify.info(
-            "We're sorry, but you've reached the end of search results.",
-            paramsForNotify
-          );
+          Notify.info("We're sorry, but you've reached the end of search results.", paramsForNotify);
           this.setState({ btnLoadMore: false });
-        }
+        };
       })
-      .catch(onFetchError)
-      .finally(() => {
-        this.setState({ loading: false });
-      });
+    .catch(onFetchError)
+    .finally(() => {
+      this.setState({ loading: false });
+    });
+  }
+  onClickRender = () => {
+    this.setState(({ page }) => ({ page: page + 1 }));
   };
 
   onSubmitSearchBar = event => {
@@ -100,8 +91,6 @@ class App extends Component {
       page: 1,
       photos: [],
     });
-
-    // form.reset();
   };
 
   toggleModal = () => {
@@ -118,7 +107,8 @@ class App extends Component {
   };
 
   render() {
-    const { loading, photos, showModal, selectedPhoto } = this.state;
+    const { loading, photos, showModal, selectedPhoto, btnLoadMore } =
+      this.state;
 
     return (
       <div>
@@ -129,6 +119,10 @@ class App extends Component {
           photos={photos}
           onClickImageItem={this.onClickOpenModal}
         />
+
+        {photos.length !== 0 && btnLoadMore && (
+          <Button onClickRender={this.onClickRender} />
+        )}
         {showModal && (
           <Modal
             selectedPhoto={selectedPhoto}
