@@ -7,7 +7,7 @@ const ImageGallery = ({ photos, onClickImageItem }) => (
       photos.map(({ webformatURL, id, tags }) => (
         <ImageGalleryItem
           key={id}
-          data-id={id}
+          id={id}
           tags={tags}
           smallUrl={webformatURL}
           onClickImageItem={onClickImageItem}

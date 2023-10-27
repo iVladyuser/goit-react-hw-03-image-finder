@@ -112,7 +112,6 @@ class App extends Component {
     const { photos } = this.state;
     const imageId = event.target.getAttribute('data-id');
     const selectedPhoto = photos.find(photo => photo.id === Number(imageId));
-    console.log(selectedPhoto);
     this.setState({ selectedPhoto });
 
     this.toggleModal();
